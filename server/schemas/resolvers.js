@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User } = require('../models');
+const { User, bookSchema } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -9,13 +9,13 @@ const resolvers = {
       // user: async (parent, { username }) => {
       //   return await User.findOne({ username }).populate('User');
       // },
-    books: async (parent, { title }) => {
-      const params = await title ? { title } : {};
-      return Book.find(params);
-    },
+    // books: async (parent, { title }) => {
+    //   const params = await title ? { title } : {};
+    //   return Book.find(params);
+    // },
     me: async (parent, args, context) => {
       if (context.user) {
-        return await User.findOne({ username: context.user.username }).populate('User');
+        return await User.findOne({ _id: context.user._id }).populate('User');
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -47,7 +47,7 @@ const resolvers = {
     saveBook: async (parent, { newBook }) => {
 
       const updatedUser = await User.findOneAndUpdate(
-        {username: context.user.username },
+        {_id: context.user._id },
         { $addToSet: { savedBooks: newBook } },
         { new: true, runValidators: true }
       );
@@ -69,8 +69,8 @@ const resolvers = {
     //   return Thought.findOneAndDelete({ _id: thoughtId });
     // },
     deleteBook: async (parent, { bookId }) => {
-      const updatedUser = await User.findOneAndDelete(
-        { username: context.user.username },
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: context.user._id },
         { $pull: { savedBooks: { bookId } } },
         { new: true }
       );
