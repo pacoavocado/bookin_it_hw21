@@ -1,24 +1,24 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book } = require('../models');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     // users: async () => {
       
-    //   return User.find().populate('thoughts');
-    // },
-    // not sure about this!!!
-    user: async (parent, { args }) => {
-      return await User.findOne({ args });
+      // user: async (parent, { username }) => {
+      //   return await User.findOne({ username }).populate('User');
+      // },
+    books: async (parent, { title }) => {
+      const params = await title ? { title } : {};
+      return Book.find(params);
     },
-    // thoughts: async (parent, { username }) => {
-    //   const params = username ? { username } : {};
-    //   return Thought.find(params).sort({ createdAt: -1 });
-    // },
-    // thought: async (parent, { thoughtId }) => {
-    //   return Thought.findOne({ _id: thoughtId });
-    // },
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return await User.findOne({ username: context.user.username }).populate('User');
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
   },
 
   Mutation: {
@@ -47,7 +47,7 @@ const resolvers = {
     saveBook: async (parent, { newBook }) => {
 
       const updatedUser = await User.findOneAndUpdate(
-        { _id: user._id },
+        {username: context.user.username },
         { $addToSet: { savedBooks: newBook } },
         { new: true, runValidators: true }
       );
@@ -69,8 +69,8 @@ const resolvers = {
     //   return Thought.findOneAndDelete({ _id: thoughtId });
     // },
     deleteBook: async (parent, { bookId }) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: user._id },
+      const updatedUser = await User.findOneAndDelete(
+        { username: context.user.username },
         { $pull: { savedBooks: { bookId } } },
         { new: true }
       );
