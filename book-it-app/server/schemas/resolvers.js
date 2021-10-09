@@ -22,7 +22,7 @@ const resolvers = {
   },
 
   Mutation: {
-    createUser: async (parent, { username, email, password }) => {
+    addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
       const token = signToken(user);
       return { token, user };
@@ -68,7 +68,7 @@ const resolvers = {
     // removeThought: async (parent, { thoughtId }) => {
     //   return Thought.findOneAndDelete({ _id: thoughtId });
     // },
-    deleteBook: async (parent, { bookId }) => {
+    removeBook: async (parent, { bookId }) => {
       const updatedUser = await User.findOneAndUpdate(
         { _id: context.user._id },
         { $pull: { savedBooks: { bookId } } },
