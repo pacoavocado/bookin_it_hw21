@@ -8,6 +8,7 @@ const typeDefs = gql`
     password: String!
     savedBooks: [ Book ]
   }
+  
   input SearchBook {
     authors: [ String ]
     description: String!
