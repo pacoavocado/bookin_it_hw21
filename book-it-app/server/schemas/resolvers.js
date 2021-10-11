@@ -1,25 +1,13 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, bookSchema } = require('../models');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    // users: async () => {
-    user: async (parent, {username}) => {
-      return User.findOne({username}).populate('user')
-
-    },
-      // user: async (parent, { username }) => {
-      //   return await User.findOne({ username }).populate('User');
-      // },
-    // books: async (parent, { title }) => {
-    //   const params = await title ? { title } : {};
-    //   return Book.find(params);
-    // },
     me: async (parent, args, context) => {
 
       if (context.user) {
-        return await User.findOne({ _id: context.user._id }).populate('User');
+        return await User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -57,21 +45,7 @@ const resolvers = {
       );
       return updatedUser;
     },
-    // addComment: async (parent, { thoughtId, commentText, commentAuthor }) => {
-    //   return Thought.findOneAndUpdate(
-    //     { _id: thoughtId },
-    //     {
-    //       $addToSet: { comments: { commentText, commentAuthor } },
-    //     },
-    //     {
-    //       new: true,
-    //       runValidators: true,
-    //     }
-    //   );
-    // },
-    // removeThought: async (parent, { thoughtId }) => {
-    //   return Thought.findOneAndDelete({ _id: thoughtId });
-    // },
+   
     removeBook: async (parent, { bookId }) => {
       const updatedUser = await User.findOneAndUpdate(
         { _id: context.user._id },
