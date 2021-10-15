@@ -1,198 +1,70 @@
-# 21 MERN: Book Search Engine
+# Getting Started with Create React App
 
-## Your Task
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Modern websites are driven by two things: data and user demands.
+## Available Scripts
 
-Took starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end. 
+In the project directory, you can run:
 
+### `npm start`
 
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## User Story
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-```md
-AS AN avid reader
-I WANT to search for new books to read
-SO THAT I can keep a list of books to purchase
-```
+### `npm test`
 
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### `npm run build`
 
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Getting Started
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-In order for this application to use a GraphQL API, you’ll need to refactor the API to use GraphQL on the back end and add some functionality to the front end. The following sections contain details about the files you’ll need to modify on the back end and the front end.
+### `npm run eject`
 
-**Important**: Make sure to study the application before building upon it. Better yet, start by making a copy of it. It's already a working application&mdash;you're converting it from RESTful API practices to a GraphQL API.
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-### Back-End Specifications
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-You’ll need to complete the following tasks in each of these back-end files:
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-* `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-* `auth.js`: Update the auth middleware function to work with the GraphQL API.
+## Learn More
 
-	**Hint**: Refer to the class activities as a refresher on how to do this.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-* `Schemas` directory:
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-	* `index.js`: Export your typeDefs and resolvers.
+### Code Splitting
 
-	* `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-		**Hint**: Use the functionality in the `user-controller.js` as a guide.
+### Analyzing the Bundle Size
 
-	* `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-		* `Query` type:
+### Making a Progressive Web App
 
-			* `me`: Which returns a `User` type.
-		
-		* `Mutation` type:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-			* `login`: Accepts an email and password as parameters; returns an `Auth` type.
+### Advanced Configuration
 
-			* `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-			* `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
+### Deployment
 
-			* `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
-			
-		* `User` type:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-			* `_id`
+### `npm run build` fails to minify
 
-			* `username`
-
-			* `email`
-
-			* `bookCount`
-
-			* `savedBooks` (This will be an array of the `Book` type.)
-
-		* `Book` type:
-
-			* `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
-
-			* `authors` (An array of strings, as there may be more than one author.)
-
-			* `description`
-
-			* `title`
-
-			* `image`
-
-			* `link`
-
-		* `Auth` type:
-
-			* `token`
-
-			* `user` (References the `User` type.)
-
-
-### Front-End Specifications
-
-You'll need to create the following front-end files:
-
-* `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
-
-* `mutations.js`:
-
-	* `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
-
-	* `ADD_USER` will execute the `addUser` mutation.
-
-	* `SAVE_BOOK` will execute the `saveBook` mutation.
-
-	* `REMOVE_BOOK` will execute the `removeBook` mutation.
-
-Additionally, you’ll need to complete the following tasks in each of these front-end files:
-
-* `App.js`: Create an Apollo Provider to make every request work with the Apollo Server.
-	
-* `SearchBooks.js`:
-
-	* Use the Apollo `useMutation()` Hook to execute the `SAVE_BOOK` mutation in the `handleSaveBook()` function instead of the `saveBook()` function imported from the `API` file.
-
-	* Make sure you keep the logic for saving the book's ID to state in the `try...catch` block! 
-
-* `SavedBooks.js`:
-
-	* Remove the `useEffect()` Hook that sets the state for `UserData`.
-
-	* Instead, use the `useQuery()` Hook to execute the `GET_ME` query on load and save it to a variable named `userData`.
-
-	* Use the `useMutation()` Hook to execute the `REMOVE_BOOK` mutation in the `handleDeleteBook()` function instead of the `deleteBook()` function that's imported from `API` file. (Make sure you keep the `removeBookId()` function in place!)
-
-* `SignupForm.js`: Replace the `addUser()` functionality imported from the `API` file with the `ADD_USER` mutation functionality.
-
-* `LoginForm.js`: Replace the `loginUser()` functionality imported from the `API` file with the `LOGIN_USER` mutation functionality.
-
-
-## Grading Requirements
-
-This homework is graded based on the following criteria:
-
-### Technical Acceptance Criteria: 40%
-
-* Satisfies all of the preceding acceptance criteria plus the following:
-
-	* Has an Apollo Server that uses GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
-
-	* Use an Apollo Server and apply it to the Express.js server as middleware.
-
-	* Include schema settings for resolvers and typeDefs as outlined in the homework instructions.
-
-	* Modify the existing authentication middleware to work in the context of a GraphQL API.
-
-	* Use an Apollo Provider so that the application can communicate with the Apollo Server.
-
-	* Application must be deployed to Heroku.
-
-
-### Deployment: 32%
-
-* Application deployed at live URL.
-
-* Application loads with no errors.
-
-* Application GitHub URL submitted.
-
-* GitHub repository contains application code.
-
-
-### Application Quality: 15%
-
-* User experience is intuitive and easy to navigate.
-
-* User interface style is clean and polished.
-
-* Application resembles the mock-up functionality provided in the homework instructions.
-
-
-### Repository Quality: 13%
-
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains high-quality README file with description, screenshot, and link to the deployed application.
-
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
-
----
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
